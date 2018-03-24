@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.whitespace123.mapper.ImageMapper">
+	<!-- 与数据库字段映射 -->
+	<resultMap id="BaseResultMap" type="cc.whitespace123.enity.Image">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="image_path" property="imagePath" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<association property="userId" javaType="cc.whitespace123.enity.User">
+			<!-- column:user表的主键对应的列 property：user对象中id属性 -->
+			<id column="user_id" property="id" />
+		</association>
+		<association property="articleId" javaType="cc.whitespace123.enity.Article">
+			<!-- column:image表的主键对应的列 property：article对象中id属性 -->
+			<id column="article_id" property="id" />
+		</association>
+	</resultMap>
+	<!-- sql片段 -->
+	<sql id="image_table_field">
+		title,image_path,content,user_id,article_id
+	</sql>
+	<!-- 插入图片 -->
+	<insert id="insertImage" parameterType="cc.whitespace123.enity.Image">
+		<!-- selectKey将主键返回，需要再返回 -->
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO image(
+		<include refid="image_table_field" />
+		)
+		VALUES(
+		#{title},#{imagePath},#{content},#{userId.id},#{articleId.id})
+	</insert>
+	<!-- 删除图片 -->
+	<delete id="deleteImage" parameterType="cc.whitespace123.enity.Image">
+		DELETE FROM image
+		WHERE
+		id
+		= #{id} AND user_id = #{userId.id}
+	</delete>
+	<!-- 修改图片 -->
+	<update id="updateImage" parameterType="cc.whitespace123.enity.Image">
+		UPDATE image SET
+		title =
+		#{title},image_path = #{imagePath},
+		content = #{content} WHERE id =
+		#{id}
+	</update>
+	<!-- 查询图片 -->
+	<select id="selectImage" parameterType="cc.whitespace123.enity.Image"
+		resultMap="BaseResultMap">
+		SELECT id
+		<include refid="image_table_field" />
+		FROM image WHERE id =
+		#{id} AND user_id = #{userId.id}
+	</select>
+	<!-- 根据关键字查询图片 -->
+	<select id="selectImages" parameterType="cc.whitespace123.enity.Image"
+		resultMap="BaseResultMap">
+		SELECT id
+		<include refid="image_table_field" />
+		FROM image
+		<where>
+			userId = #{userId.id}
+			<if test="title!=null and title!=''">
+				AND title LIKE CONCAT('%',#{title},'%')
+			</if>
+			<if test="content!=null and content!=''">
+				AND content LIKE CONCAT('%',#{content},'%')
+			</if>
+		</where>
+	</select>
+</mapper>

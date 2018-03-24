@@ -9,7 +9,8 @@ public class User {
 	private Date jointime;
 	private String instroduction;
 	private String imagePath;
-	private Byte sex;
+	private Integer sex;
+	//用户的角色
 	private Integer role;
 
 	public User() {
@@ -17,7 +18,7 @@ public class User {
 	}
 
 	public User(Integer id, String username, String password, Date jointime, String instroduction, String imagePath,
-			Byte sex, Integer role) {
+			Integer sex, Integer role) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -77,11 +78,11 @@ public class User {
 		this.imagePath = imagePath;
 	}
 
-	public Byte getSex() {
+	public Integer getSex() {
 		return sex;
 	}
 
-	public void setSex(Byte sex) {
+	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
 
@@ -168,3 +169,4 @@ public class User {
 	}
 
 }
+

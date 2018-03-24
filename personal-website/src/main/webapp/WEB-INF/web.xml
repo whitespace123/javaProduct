@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="2.5">
 	<display-name>personal-website</display-name>
 	<welcome-file-list>
-		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	<!-- 解决post乱码 -->
 	<filter>
@@ -20,6 +20,16 @@
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<!-- 加载spring容器 -->
+	<!-- 初始化加载application.xml的各种配置文件 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/applicationContext-*.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
 	<!-- springmvc的前端控制器 -->
 	<servlet>
