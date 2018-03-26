@@ -16,7 +16,7 @@
 	</resultMap>
 	<!-- sql片段 -->
 	<sql id="article_table_field">
-		,title,content,jointime,type,abstract,user_id
+		id,title,content,jointime,type,abstract,user_id
 	</sql>
 	<!-- 插入文章 -->
 	<insert id="insertActicle" parameterType="cc.whitespace123.enity.Article">
@@ -28,7 +28,7 @@
 		INSERT INTO article(
 		<include refid="article_table_field" />
 		)
-		VALUES(#{title},#{content},#{jointime},#{type},#{summary},#{userId.id})
+		VALUES(null,#{title},#{content},#{jointime},#{type},#{summary},#{userId.id})
 	</insert>
 	<!-- 删除文章 -->
 	<delete id="deleteArticle" parameterType="cc.whitespace123.enity.Article">
@@ -46,7 +46,7 @@
 	<!-- 查询文章 -->
 	<select id="selectArticle" parameterType="cc.whitespace123.enity.Article"
 		resultMap="BaseResultMap">
-		SELECT id
+		SELECT
 		<include refid="article_table_field" />
 		FROM article WHERE id =
 		#{id} AND user_id = #{userId.id}
@@ -54,7 +54,7 @@
 	<!-- 根据关键字查询文章 -->
 	<select id="selectArticles" parameterType="cc.whitespace123.enity.Article"
 		resultMap="BaseResultMap">
-		SELECT id
+		SELECT
 		<include refid="article_table_field" />
 		FROM article
 		<where>
