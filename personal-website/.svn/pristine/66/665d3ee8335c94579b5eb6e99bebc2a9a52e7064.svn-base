@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico"  media="screen"/>
+</head>
+<body>
+<a href="favicon.ico">22</a>
+    <h1>文章标题:${title}</h1>
+    <h1>文章标题:${content}</h1>
+    <h1>文章标题:${type}</h1>
+    <h1>文章标题:${id}</h1>
+</body>
+</html>

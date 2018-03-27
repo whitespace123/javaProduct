@@ -6,6 +6,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,10 @@ public class MyRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		// 为用户授权
+		info.addStringPermission("staff-list");
+		//TODO 后期需要修改为根据权限表来查询数据授权
+		return info;
 	}
 }

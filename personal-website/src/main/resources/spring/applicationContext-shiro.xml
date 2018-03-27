@@ -16,6 +16,15 @@
 						http://cxf.apache.org/jaxws 
 						http://cxf.apache.org/schemas/jaxws.xsd
 						">
+	<!-- 开启shiro注解支持，基于动态代理技术aop,自动代理类 -->
+	<bean id="defaultAdvisorAutoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+		<!-- 使用true的话使用cglib代理方式（继承方式），如果为false的话是jdk代理方式（接口方式,可能没有所需的方法）,必须为cglib -->
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<!-- 配置shiro框架提供的切面类，用于创建代理对象 -->
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor" />
 	<!-- 配置shiro框架的过滤器工厂对象 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<!-- 注入安全管理器对象 -->

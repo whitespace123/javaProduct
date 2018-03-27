@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.whitespace123.mapper.ReplyMapper">
+	<!-- 与数据库字段映射 -->
+	<resultMap id="BaseResultMap" type="cc.whitespace123.enity.Reply">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="reply_time" property="replyTime" jdbcType="DATE" />
+		<association property="articleId" javaType="cc.whitespace123.enity.Article">
+			<!-- column:article表的主键对应的列 property：article对象中id属性 -->
+			<id column="article_id" property="id" />
+		</association>
+		<association property="userId" javaType="cc.whitespace123.enity.User">
+			<!-- column:user表的主键对应的列 property：user对象中id属性 -->
+			<id column="user_id" property="id" />
+		</association>
+	</resultMap>
+	<!-- sql片段 -->
+	<sql id="reply_table_field">
+		content,reply_time,article_id,user_id
+	</sql>
+	<!-- 插入评论 -->
+	<insert id="insertReply" parameterType="cc.whitespace123.enity.Reply">
+		<!-- selectKey将主键返回，需要再返回 -->
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO reply(
+		<include refid="reply_table_field" />
+		)
+		VALUES(
+		#{content},#{replyTime},#{articleId.id},#{userId.id})
+	</insert>
+	<!-- 删除评论 -->
+	<delete id="deleteReply" parameterType="cc.whitespace123.enity.Reply">
+		DELETE FROM reply
+		WHERE
+		id
+		= #{id} AND user_id = #{userId.id}
+	</delete>
+	<!-- 修改评论 -->
+	<update id="updateReply" parameterType="cc.whitespace123.enity.Reply">
+		UPDATE reply SET
+		content =
+		#{content},reply_time=#{replyTime}
+		WHERE
+		id =
+		#{id}
+	</update>
+	<!-- 查询评论 -->
+	<select id="selectReply" parameterType="cc.whitespace123.enity.Reply"
+		resultMap="BaseResultMap">
+		SELECT id
+		<include refid="reply_table_field" />
+		FROM reply WHERE id =
+		#{id} AND user_id = #{userId.id}
+	</select>
+	<!-- 根据关键字查询评论 -->
+	<select id="selectReplies" parameterType="cc.whitespace123.enity.Reply"
+		resultMap="BaseResultMap">
+		SELECT id
+		<include refid="reply_table_field" />
+		FROM reply
+		<where>
+			userId = #{userId.id}
+			<if test="content!=null and content!=''">
+				AND content LIKE CONCAT('%',#{content},'%')
+			</if>
+		</where>
+	</select>
+</mapper>
